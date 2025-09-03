@@ -91,8 +91,10 @@ const CountdownTimer = () => {
       <div className="space-y-4">
         <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
         <p className="text-muted-foreground max-w-2xl mx-auto">
-          Get ready for something extraordinary. FEBEX Group is preparing to launch with innovative solutions and exceptional service.
+          Get ready for exceptional service from FEBEX Group. Wanna know how we'll make money? Just COME BACK !
         </p>
+
+        <p>And bytheway, its pronounced /fibeks/ 😁 cool right ?</p>
       </div>
     </div>
   );
