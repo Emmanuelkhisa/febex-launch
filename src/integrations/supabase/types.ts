@@ -14,7 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      visitor_analytics: {
+        Row: {
+          city: string | null
+          country: string | null
+          created_at: string
+          first_visit: string
+          id: string
+          ip_address: unknown
+          last_visit: string
+          updated_at: string
+          user_agent: string | null
+          visit_count: number
+        }
+        Insert: {
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          first_visit?: string
+          id?: string
+          ip_address: unknown
+          last_visit?: string
+          updated_at?: string
+          user_agent?: string | null
+          visit_count?: number
+        }
+        Update: {
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          first_visit?: string
+          id?: string
+          ip_address?: unknown
+          last_visit?: string
+          updated_at?: string
+          user_agent?: string | null
+          visit_count?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
