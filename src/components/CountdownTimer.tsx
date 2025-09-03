@@ -93,8 +93,8 @@ const CountdownTimer = () => {
         <p className="text-muted-foreground max-w-2xl mx-auto">
           Get ready for exceptional service from FEBEX Group. Wanna know how we'll make money? Just COME BACK !
         </p>
-
-        <p>And bytheway, its pronounced /fibeks/ 😁 cool right ?</p>
+        <br></br>
+        <p className="text-muted-foreground max-w-2xl mx-auto">And bytheway, its pronounced /fibeks/ 😁 cool right ?</p>
       </div>
     </div>
   );
