@@ -14,6 +14,27 @@ export type Database = {
   }
   public: {
     Tables: {
+      email_reminders: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          reminder_sent: boolean
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          reminder_sent?: boolean
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          reminder_sent?: boolean
+        }
+        Relationships: []
+      }
       visitor_analytics: {
         Row: {
           city: string | null
