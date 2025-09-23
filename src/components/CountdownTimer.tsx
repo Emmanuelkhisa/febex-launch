@@ -221,7 +221,7 @@ END:VCALENDAR`;
                   />
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  We'll send you a reminder email 1 day before the FEBEX Group launch.
+                  Receive an email reminder a day before the launch of FEBEX Group.
                 </p>
                 <div className="flex gap-2">
                   <Button
