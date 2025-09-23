@@ -1,5 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Calendar, Mail, CheckCircle } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 interface TimeLeft {
   days: number;
@@ -11,9 +18,86 @@ interface TimeLeft {
 const CountdownTimer = () => {
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [isLive, setIsLive] = useState(false);
+  const [email, setEmail] = useState('');
+  const [isEmailDialogOpen, setIsEmailDialogOpen] = useState(false);
+  const [isSubmittingEmail, setIsSubmittingEmail] = useState(false);
+  const { toast } = useToast();
 
   // November 1st, 2025 at 10:00 AM EAT (UTC+3)
   const launchDate = new Date('2025-11-01T07:00:00.000Z'); // 10:00 AM EAT = 07:00 AM UTC
+  const reminderDate = new Date('2025-10-31T07:00:00.000Z'); // 1 day before launch
+
+  const handleCalendarReminder = () => {
+    const startTime = reminderDate.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    const endTime = new Date(reminderDate.getTime() + 60 * 60 * 1000).toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    
+    const event = {
+      title: 'FEBEX Group Launch Tomorrow!',
+      start: startTime,
+      end: endTime,
+      description: 'FEBEX Group is launching tomorrow at 10:00 AM EAT. Get ready for exceptional service!'
+    };
+
+    const calendarUrl = `data:text/calendar;charset=utf8,BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//FEBEX Group//NONSGML Launch Reminder//EN
+BEGIN:VEVENT
+UID:${Date.now()}@febexgroup.com
+DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z
+DTSTART:${event.start}
+DTEND:${event.end}
+SUMMARY:${event.title}
+DESCRIPTION:${event.description}
+END:VEVENT
+END:VCALENDAR`;
+
+    const link = document.createElement('a');
+    link.href = calendarUrl;
+    link.download = 'febex-launch-reminder.ics';
+    link.click();
+
+    toast({
+      title: "Calendar Event Created",
+      description: "Reminder set for 1 day before FEBEX Group launch!",
+    });
+  };
+
+  const handleEmailReminder = async () => {
+    if (!email || !email.includes('@')) {
+      toast({
+        title: "Invalid Email",
+        description: "Please enter a valid email address",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsSubmittingEmail(true);
+    
+    try {
+      const { error } = await supabase.functions.invoke('store-email-reminder', {
+        body: { email }
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Email Reminder Set!",
+        description: "You'll receive a reminder email 1 day before launch",
+      });
+      
+      setEmail('');
+      setIsEmailDialogOpen(false);
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to set email reminder",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmittingEmail(false);
+    }
+  };
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -93,6 +177,79 @@ const CountdownTimer = () => {
         <p className="text-muted-foreground max-w-2xl mx-auto">
           Get ready for exceptional service from FEBEX Group. Wanna know how we'll make money? Just COME BACK !
         </p>
+        
+        {/* Reminder Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-6">
+          <Button
+            onClick={handleCalendarReminder}
+            variant="outline"
+            size="lg"
+            className="flex items-center gap-2 hover:bg-primary/10 hover:border-primary/30"
+          >
+            <Calendar className="w-5 h-5" />
+            Set Calendar Reminder
+          </Button>
+          
+          <Dialog open={isEmailDialogOpen} onOpenChange={setIsEmailDialogOpen}>
+            <DialogTrigger asChild>
+              <Button
+                variant="outline"
+                size="lg"
+                className="flex items-center gap-2 hover:bg-primary/10 hover:border-primary/30"
+              >
+                <Mail className="w-5 h-5" />
+                Email Reminder
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <Mail className="w-5 h-5" />
+                  Get Email Reminder
+                </DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4 pt-4">
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email Address</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="your@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={isSubmittingEmail}
+                  />
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  We'll send you a reminder email 1 day before the FEBEX Group launch.
+                </p>
+                <div className="flex gap-2">
+                  <Button
+                    onClick={handleEmailReminder}
+                    disabled={isSubmittingEmail}
+                    className="flex-1"
+                  >
+                    {isSubmittingEmail ? (
+                      <>Setting Reminder...</>
+                    ) : (
+                      <>
+                        <CheckCircle className="w-4 h-4 mr-2" />
+                        Set Reminder
+                      </>
+                    )}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => setIsEmailDialogOpen(false)}
+                    disabled={isSubmittingEmail}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
     </div>
   );

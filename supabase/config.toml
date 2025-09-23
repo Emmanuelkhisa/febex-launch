@@ -3,3 +3,6 @@ project_id = "becmbmgqppbredjvqrbs"
 [functions]
   [functions.log-visit]
   verify_jwt = false
+  
+  [functions.store-email-reminder]
+  verify_jwt = false
