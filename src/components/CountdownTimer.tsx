@@ -136,7 +136,7 @@ END:VCALENDAR`;
             Visit our official website now:
           </p>
           <a 
-            href="https://febexgroup.netlify.app" 
+            href="https://febexgroup.com" 
             target="_blank" 
             rel="noopener noreferrer"
             className="inline-flex items-center px-8 py-4 text-lg font-semibold rounded-xl bg-gradient-primary text-primary-foreground hover:shadow-glow-primary transition-all duration-500 hover:scale-105 group"
