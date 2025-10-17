@@ -4,9 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Calendar, Mail, CheckCircle } from 'lucide-react';
+import { Calendar, Mail, CheckCircle, TrendingUp, Users, Shield } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import CelebrationEffects from './CelebrationEffects';
 
 interface TimeLeft {
   days: number;
@@ -18,6 +19,7 @@ interface TimeLeft {
 const CountdownTimer = () => {
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [isLive, setIsLive] = useState(false);
+  const [isFinalDay, setIsFinalDay] = useState(false);
   const [email, setEmail] = useState('');
   const [isEmailDialogOpen, setIsEmailDialogOpen] = useState(false);
   const [isSubmittingEmail, setIsSubmittingEmail] = useState(false);
@@ -110,8 +112,15 @@ END:VCALENDAR`;
         return;
       }
 
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      
+      // Check if it's the final day (less than 24 hours)
+      if (days === 0 && !isFinalDay) {
+        setIsFinalDay(true);
+      }
+
       setTimeLeft({
-        days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+        days,
         hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
         minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
         seconds: Math.floor((distance % (1000 * 60)) / 1000)
@@ -119,7 +128,7 @@ END:VCALENDAR`;
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [isFinalDay]);
 
   if (isLive) {
     return (
@@ -153,12 +162,14 @@ END:VCALENDAR`;
 
   return (
     <div className="text-center space-y-8">
+      {isFinalDay && <CelebrationEffects />}
+      
       <div className="space-y-4">
         <h1 className="text-5xl md:text-7xl font-bold bg-gradient-primary bg-clip-text text-transparent">
           FEBEX GROUP
         </h1>
         <p className="text-xl md:text-2xl text-muted-foreground">
-          Launching Soon
+          {isFinalDay ? '🎉 Final Countdown! 🎉' : 'Launching Soon'}
         </p>
         <div className="text-sm md:text-base text-muted-foreground">
           November 1st, 2025 • 10:00 AM EAT
@@ -172,11 +183,61 @@ END:VCALENDAR`;
         <TimeUnit value={timeLeft.seconds} label="Seconds" />
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-6">
         <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
-        <p className="text-muted-foreground max-w-2xl mx-auto">
-          Get ready for exceptional service from FEBEX Group. Wanna know how we'll make money? Just COME BACK !
-        </p>
+        
+        {/* About FEBEX Section */}
+        <div className="max-w-3xl mx-auto space-y-6">
+          <div className="space-y-2">
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+              Building Trust, Growth and Collaboration
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              Online Forex Account Management & Investment Platform
+            </p>
+          </div>
+
+          <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
+            FEBEX Group bridges the gap between expert traders and investors through our innovative 
+            profit-sharing model. We trade on behalf of non-traders, delivering professional forex 
+            account management with tailored solutions that benefit both traders and investors.
+          </p>
+
+          {/* Feature Cards */}
+          <div className="grid md:grid-cols-3 gap-4 pt-4">
+            <Card className="p-4 bg-gradient-card border-border/50 backdrop-blur-sm hover:shadow-glow-primary/20 transition-all">
+              <div className="flex flex-col items-center text-center space-y-2">
+                <TrendingUp className="w-8 h-8 text-primary" />
+                <h3 className="font-semibold text-foreground">Expert Trading</h3>
+                <p className="text-sm text-muted-foreground">
+                  Professional forex management by experienced traders
+                </p>
+              </div>
+            </Card>
+
+            <Card className="p-4 bg-gradient-card border-border/50 backdrop-blur-sm hover:shadow-glow-primary/20 transition-all">
+              <div className="flex flex-col items-center text-center space-y-2">
+                <Users className="w-8 h-8 text-primary" />
+                <h3 className="font-semibold text-foreground">Profit Sharing</h3>
+                <p className="text-sm text-muted-foreground">
+                  Fair models designed for mutual success
+                </p>
+              </div>
+            </Card>
+
+            <Card className="p-4 bg-gradient-card border-border/50 backdrop-blur-sm hover:shadow-glow-primary/20 transition-all">
+              <div className="flex flex-col items-center text-center space-y-2">
+                <Shield className="w-8 h-8 text-primary" />
+                <h3 className="font-semibold text-foreground">Trust & Security</h3>
+                <p className="text-sm text-muted-foreground">
+                  Transparent operations with your interests first
+                </p>
+              </div>
+            </Card>
+          </div>
+        </div>
+        
+        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
         
         {/* Reminder Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-6">

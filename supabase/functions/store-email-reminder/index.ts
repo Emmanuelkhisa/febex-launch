@@ -60,44 +60,133 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log('Email reminder stored:', data);
 
-    // Send confirmation email with rich HTML content
+    // Send confirmation email with FEBEX brand template
     try {
       const emailResponse = await resend.emails.send({
         from: "FEBEX Group <info@febexgroup.com>",
         to: [email],
         subject: "🚀 FEBEX Group Launch Reminder Set!",
         html: `
-          <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff;">
-            <div style="text-align: center; margin-bottom: 30px;">
-              <h1 style="color: #333; font-size: 28px; font-weight: bold; margin-bottom: 10px;">🚀 FEBEX Group</h1>
-              <p style="color: #666; font-size: 18px; margin: 0;">Launch Reminder Confirmed!</p>
-            </div>
-            
-            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; padding: 30px; margin-bottom: 30px; text-align: center;">
-              <h2 style="color: white; font-size: 24px; margin: 0 0 15px 0;">You're All Set! 🎉</h2>
-              <p style="color: white; font-size: 16px; margin: 0; opacity: 0.9;">We'll send you a reminder email 1 day before our official launch on <strong>November 1st, 2025 at 10:00 AM EAT</strong>.</p>
-            </div>
-            
-            <div style="margin-bottom: 30px;">
-              <h3 style="color: #333; font-size: 20px; margin-bottom: 15px;">What to Expect</h3>
-              <ul style="color: #666; font-size: 16px; line-height: 1.6; padding-left: 20px;">
-                <li>Exceptional service from FEBEX Group</li>
-                <li>Innovative solutions tailored to your needs</li>
-                <li>Access to our official website and services</li>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <title>FEBEX Group Launch Reminder</title>
+  <style>
+    a:hover { text-decoration: underline; }
+    p { line-height: 1.6; margin: 10px 0; }
+    .cta-button {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: #F59E0B;
+      color: #1E3A8A;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: bold;
+      font-size: 16px;
+    }
+    .cta-button:hover { background-color: #e58e00; }
+    @media only screen and (max-width: 600px) {
+      .container { width: 100% !important; }
+      .header td { padding: 15px !important; }
+      .header img { width: 60px !important; }
+      .header h2 { font-size: 20px !important; }
+      .header p { font-size: 14px !important; }
+      .content td { padding: 20px !important; font-size: 14px !important; }
+      .footer td { padding: 15px !important; font-size: 12px !important; }
+      .footer img { width: 24px !important; }
+      .cta-button { padding: 10px 20px !important; font-size: 14px !important; }
+    }
+  </style>
+</head>
+<body style="margin:0; padding:0; background-color:#000000; font-family:Arial, sans-serif; color:#E2E8F0;">
+  <div style="display:none;">Your FEBEX Group launch reminder is confirmed!</div>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#000000;">
+    <tr>
+      <td align="center" style="padding: 20px 10px;">
+        <!-- Container -->
+        <table class="container" width="600" cellpadding="0" cellspacing="0" border="0" style="background-color:#1C1C1C; border-radius:8px; overflow:hidden;">
+          <!-- Header -->
+          <tr>
+            <td class="header" style="background-color:#F59E0B; color:#1E3A8A; padding:20px; text-align:left;">
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="width:80px; vertical-align:middle;">
+                    <img src="https://febexgroup.netlify.app/uploads/F-logo.jpg" alt="FEBEX Group Logo" width="80" style="border-radius:4px;">
+                  </td>
+                  <td style="text-align:center;">
+                    <h2 style="margin:0; font-size:24px; color:#1E3A8A; font-weight:bold;">FEBEX Group</h2>
+                    <p style="margin:8px 0 0; font-size:16px; color:#1E3A8A;">Building Trust, Growth and Collaboration</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <!-- Content -->
+          <tr>
+            <td class="content" style="padding:30px; color:#E2E8F0; font-size:16px; text-align:left;">
+              <p style="margin-top:0; font-size:20px; color:#F59E0B; font-weight:bold;">🎉 You're All Set!</p>
+              
+              <p>Thank you for signing up for our launch reminder! We're thrilled to have you on board as we prepare for something extraordinary.</p>
+              
+              <p><strong style="color:#F59E0B;">We'll notify you 1 day before our official launch on November 1st, 2025 at 10:00 AM EAT.</strong></p>
+              
+              <div style="background-color:#172554; border-left:4px solid #F59E0B; padding:15px; margin:20px 0; border-radius:4px;">
+                <p style="margin:0; font-weight:bold; color:#F59E0B;">What is FEBEX Group?</p>
+                <p style="margin:8px 0 0;">FEBEX Group is an innovative Online Forex Account Management & Investment Platform. We bridge the gap between expert traders and investors through our unique profit-sharing model, trading on behalf of non-traders with tailored solutions that benefit everyone.</p>
+              </div>
+              
+              <p><strong>What to Expect:</strong></p>
+              <ul style="color:#E2E8F0; line-height:1.8; margin:10px 0; padding-left:20px;">
+                <li>Professional forex account management by experienced traders</li>
+                <li>Fair profit-sharing models designed for mutual success</li>
+                <li>Transparent operations with your interests first</li>
+                <li>A platform built on trust, growth, and collaboration</li>
               </ul>
-            </div>
-            
-            <div style="text-align: center; margin-bottom: 30px;">
-              <a href="https://febexgroup.com" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; padding: 15px 30px; border-radius: 8px; font-weight: bold; font-size: 16px;">Visit Our Official Site</a>
-            </div>
-            
-            <div style="border-top: 1px solid #eee; padding-top: 20px; text-align: center;">
-              <p style="color: #999; font-size: 14px; margin: 0;">
-                Get ready for something amazing! 🌟<br>
-                <a href="https://febexgroup.com" style="color: #667eea; text-decoration: none;">febexgroup.com</a>
+              
+              <p style="text-align:center; margin:25px 0;">
+                <a href="https://febexgroup.com" class="cta-button">Visit Our Website</a>
               </p>
-            </div>
-          </div>
+              
+              <p>Stay tuned for more updates as we approach the launch date. Get ready to be part of something amazing!</p>
+              
+              <p style="margin-bottom:0;">For any inquiries, reach us at <a href="mailto:info@febexgroup.com" style="color:#F59E0B; text-decoration:none;">info@febexgroup.com</a></p>
+            </td>
+          </tr>
+          <!-- Footer -->
+          <tr>
+            <td class="footer" style="background-color:#172554; padding:20px; text-align:center; font-size:14px; color:#E2E8F0;">
+              <p style="margin:8px 0; font-weight:bold;">FEBEX Group - Building Trust, Growth and Collaboration</p>
+              <p style="margin:8px 0;">Online Forex Account Management & Investment Platform</p>
+              <p style="margin:8px 0;">FEBEX Group, Westlands, Nairobi, Kenya</p>
+              <p style="margin:8px 0;">
+                <a href="https://febexgroup.com" style="color:#F59E0B; text-decoration:none;">febexgroup.com</a>
+              </p>
+              <!-- Social Icons -->
+              <p style="margin:12px 0;">
+                <a href="https://x.com/febex_official" target="_blank" rel="noopener noreferrer" style="margin:0 8px;">
+                  <img src="https://febexgroup.netlify.app/uploads/X.png" alt="Twitter/X" width="28" style="vertical-align:middle;">
+                </a>
+                <a href="https://instagram.com/febexgroup" target="_blank" rel="noopener noreferrer" style="margin:0 8px;">
+                  <img src="https://febexgroup.netlify.app/uploads/IG.png" alt="Instagram" width="28" style="vertical-align:middle;">
+                </a>
+                <a href="https://facebook.com/febexgroup" target="_blank" rel="noopener noreferrer" style="margin:0 8px;">
+                  <img src="https://febexgroup.netlify.app/uploads/FB.png" alt="Facebook" width="28" style="vertical-align:middle;">
+                </a>
+                <a href="https://tiktok.com/@febexgroup_official" target="_blank" rel="noopener noreferrer" style="margin:0 8px;">
+                  <img src="https://febexgroup.netlify.app/uploads/TOK.png" alt="TikTok" width="28" style="vertical-align:middle;">
+                </a>
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
         `,
       });
 
